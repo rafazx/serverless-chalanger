@@ -1,0 +1,63 @@
+service: serverless-challenge
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: nodejs4.3 #nodejs6.10, python2.7, python3.6
+  profile: hackathon
+  region: us-east-1
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
+functions:
+  extractMetadata:
+    handler: handler.extractMetadata
+    description:
+    memorySize: 128
+    timeout: 30
+    events:
+      - s3:
+          bucket: bucketname # Escolha o nome do seu bucket que deve ser único
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploads/
+            - suffix: .jpg
+  getMetadata:
+    handler: handler.getMetadata
+    description:
+    memorySize: 128
+    timeout: 30
+    events:
+      - http:
+          path: images/{s3objectkey}
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    ImagesDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: s3objectkey
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: s3objectkey
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}

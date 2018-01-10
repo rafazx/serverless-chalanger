@@ -1,0 +1,27 @@
+# package directories
+node_modules
+jspm_packages
+
+vendored/*
+vendored*
+*vendored/*
+*/vendored*
+
+# Serverless directories
+.serverless*
+.serverless/*
+*/.serverless*
+*/.serverless/*
+
+*.zip
+*.DS_Store*
+*.pyc
+*.xml
+
+# IDE
+.idea*
+.idea/*
+
+.cache
+.cache/*
+
