@@ -4,11 +4,12 @@ frameworkVersion: ">=1.1.0 <2.0.0"
 
 provider:
   name: aws
-  runtime: nodejs4.3 #nodejs6.10, python2.7, python3.6
+  runtime: nodejs6.10 #nodejs6.10, python2.7, python3.6
   profile: hackathon
   region: us-east-1
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    BUCKET_NAME: wogels3-serverless-challanger
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -28,7 +29,7 @@ functions:
     timeout: 30
     events:
       - s3:
-          bucket: bucketname # Escolha o nome do seu bucket que deve ser único
+          bucket: wogels3-serverless-challanger # Escolha o nome do seu bucket que deve ser único
           event: s3:ObjectCreated:*
           rules:
             - prefix: uploads/
