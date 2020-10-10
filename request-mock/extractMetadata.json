@@ -1,0 +1,38 @@
+{
+"Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-east-1",
+      "eventTime": "2020-10-10T17:13:07.217Z",
+      "eventName": "ObjectCreated:Put",
+      "userIdentity": {
+        "principalId": "AWS:AIDAX2NSPKMA62EHPFFGS"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "187.113.121.59"
+      },
+      "responseElements": {
+        "x-amz-request-id": "A3009295B257C211",
+        "x-amz-id-2": "UkgTbKyBeoGvQs07g8t01fjkLXCqDFvxCI1qo2xZsQPoYrTe89Sfa54eQCLTEfs5moQMvsueLOReNFEd/toFbYPKuMVzQqQTu0cpYrR0R2Q="
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "28142968-4b31-47d4-8c45-01c4f4bbe34c",
+        "bucket": {
+          "name": "wogels3-serverless-challanger",
+          "ownerIdentity": {
+            "principalId": "A28NLGAC3UDKZA"
+          },
+          "arn": "arn:aws:s3:::wogels3-serverless-challanger"
+        },
+        "object": {
+          "key": "uploads/pexels-photo-1108099.jpg",
+          "size": 21675,
+          "eTag": "eb48b73a4b1fc90c8bdf4eeb202544d1",
+          "sequencer": "005F81EBA73C6770F5"
+        }
+      }
+    }
+  ]
+}

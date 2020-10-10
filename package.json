@@ -1,0 +1,18 @@
+{
+    "name": "serverless-challenge",
+    "version": "1.0.0",
+    "description": "",
+    "main": "handler.js",
+    "dependencies": {
+        "aws-sdk": "^2.738.0",
+        "image-size": "^0.9.1"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "invoke-local-getMetadata": "sls invoke local -f getMetadata",
+        "invoke-local-extract": "sls invoke local -f extractMetadata --path request-mock/extractMetadata.json"
+    },
+    "author": "Rafael Wogel",
+    "license": "ISC"
+}

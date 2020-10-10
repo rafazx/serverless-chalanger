@@ -5,7 +5,7 @@ class Handler {
         try {
             return {
                 statusCode: 201,
-                body:{}
+                body: 'Funcionou'
             }
         } catch(error) {
             return {
@@ -17,5 +17,5 @@ class Handler {
 }
 
 
-const handler = new Handler(dynamoDb, S3)
+const handler = new Handler()
 module.exports = handler.main.bind(handler);
