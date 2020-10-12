@@ -1,0 +1,8 @@
+{
+    "queryStringParameters": {
+        "key": "uploads/Dogo.jpg"
+    },
+    "pathParameters": {
+        "s3objectkey": "s3objectkey"
+    }
+}

@@ -1,35 +1,29 @@
 class Handler {
-    constructor(dynamoDbSvc, S3) {
+    constructor(dynamoDbSvc, s3Services) {
         this.dynamoDbSvc = dynamoDbSvc,
-        this.S3Svc = S3,
-        this.dynamoTable = process.env.DYNAMODB_TABLE
+        this.S3Svc = s3Services,
+        this.dynamoTable = process.env.DYNAMODB_TABLE,
+        this.bucketName =  process.env.BUCKET_NAME
     }
-    async main(event, context, callback) {
+    async main({ Records: records }, context, callback) {
         try {
-            await this.extractMetadata(event)
+            await this.extractMetadata(records)
         } catch(error) {
-            return {
-                statusCode: 500,
-                body: `Internal Error + ${error}`
-            }
+            return error
         }
     }
 
-    async extractMetadata({ Records: records}) {
-        await Promise.all(records.map(async record => { 
-            const { key } = record.s3.object
-
-            const image = await S3.getObject({
-                Bucket: process.env.BUCKET_NAME,
-                Key: key
-            }).promise()
-            console.log(image)
-            const { height, width, type } = sizeOf(image.Body)
-            await this.insert(height, width, type, key)
-        }));
+    async extractMetadata(records) {
+        for(const record of records) {
+            const s3 = record.s3
+            const { key, size } = s3.object
+            const image = await this.S3Svc.getImageFromBucket(key)
+            const { height, width, type } = sizeOf(image.Body)  
+            await this.insert(height, width, type, key, size)
+        }
     }
 
-    async insert(height, width, type, key) {
+    async insert(height, width, type, key, size) {
         const params = {
             TableName: this.dynamoTable,
             Item: {
@@ -37,6 +31,7 @@ class Handler {
                 width,
                 type,
                 s3objectkey: key,
+                size,
                 createdAt: new Date().toISOString()
             }
         }
@@ -47,6 +42,6 @@ class Handler {
 const sizeOf = require('image-size');
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
-const S3 = new AWS.S3();
-const handler = new Handler(dynamoDb, S3)
+const s3Services = require('./services/s3Services');
+const handler = new Handler(dynamoDb, s3Services)
 module.exports = handler.main.bind(handler);
