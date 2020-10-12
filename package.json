@@ -15,6 +15,7 @@
         "deploy": "serverless deploy -v",
         "postdeploy": "rm -rf node_modules/image-size && npm install image-size",
         "invoke-local-getMetadata": "sls invoke local -f getMetadata --path request-mock/getMetadata.json",
+        "invoke-local-getImage": "sls invoke local -f getMetadata --path request-mock/getMetadata.json",
         "invoke-local-extract": "sls invoke local -f extractMetadata --path request-mock/extractMetadata.json"
     },
     "author": "Rafael Wogel",
