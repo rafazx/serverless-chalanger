@@ -16,7 +16,8 @@ class Handler {
             return {
                 statusCode: 200,
                 headers: {
-                    "content-type": 'image/jpeg',
+                    "Content-type": 'image/jpeg',
+                    "Content-disposition": `attachment; filename=${image.ContentType}`
                 },
                 body: image.Body.toString('base64'),
                 isBase64Encoded:true
